@@ -1,0 +1,22 @@
+services:
+  app:
+    container_name: nginx_proxy
+    image: 'jc21/nginx-proxy-manager:latest'
+    restart: unless-stopped
+    ports:
+      - '80:80'
+      - '443:443'
+      - '81:81'
+
+    volumes:
+      - data:/data
+      - letsencrypt:/etc/letsencrypt
+    networks:
+      - main
+networks:
+  main:
+    name: nginx_network
+    driver: bridge
+volumes:
+  data:
+  letsencrypt:

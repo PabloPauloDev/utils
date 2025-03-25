@@ -1,0 +1,14 @@
+services:
+  dbgate:
+    image: dbgate/dbgate
+    container_name: dbgate
+    expose:
+      - 3000
+    networks:
+      - db
+
+networks:
+  db:
+    name: postgres_network
+    external: true
+    driver: bridge

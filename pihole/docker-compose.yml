@@ -1,0 +1,30 @@
+services:
+  pihole:
+    container_name: pihole
+    image: pihole/pihole:latest
+    ports:
+      - "53:53/tcp" # Porta essencial para o Pi-hole (DNS)
+      - "53:53/udp" # Porta essencial para o Pi-hole (DNS)
+      - "8080:80/tcp"  # Porta do painel web
+    expose: 
+      - 443 # Porta do painel web https
+    env_file:
+      - ./.env
+    environment:
+      TZ: "America/Sao_Paulo"
+      WEBPASSWORD: ${PASSWORD}
+      DNS_UPSTREAM_1: 8.8.8.8
+      DNS_UPSTREAM_2: 8.8.4.4
+    volumes:
+      - "data:/etc/pihole"
+      - "dnsmasq:/etc/dnsmasq.d"
+    restart: unless-stopped
+    networks:
+      - main
+networks:
+  main:
+    name: pihole_network
+    driver: bridge
+volumes:
+  data:
+  dnsmasq:
